@@ -23,3 +23,24 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+
+# compiled output
+dist
+tmp
+
+# dependencies
+node_modules
+
+# misc
+typings
+coverage
+testem.log
+npm-debug.log
+
+# e2e
+e2e/*.js
+e2e/*.map
+
+# System Files
+.DS_Store
+Thumbs.db
