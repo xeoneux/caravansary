@@ -37,4 +37,20 @@ public class ReservationResource {
             @RequestBody ReservationRequest reservationRequest) {
         return new ResponseEntity<>(new ReservationResponse(), HttpStatus.CREATED);
     }
+
+    @RequestMapping(
+        path = "",
+        method = RequestMethod.PUT,
+        produces = MediaType.APPLICATION_JSON_UTF8_VALUE,
+        consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
+    )
+    public ResponseEntity<ReservationResponse> updateReservation(
+            @RequestBody ReservationRequest reservationRequest) {
+        return new ResponseEntity<>(new ReservationResponse(), HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> deleteReservation(@PathVariable long reservationId) {
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
