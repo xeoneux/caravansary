@@ -1,5 +1,7 @@
 package com.xeoneux.caravansary.config;
 
+import com.xeoneux.caravansary.converter.ReservationEntityToReservationResponseConverter;
+import com.xeoneux.caravansary.converter.ReservationRequestToReservationEntityConverter;
 import com.xeoneux.caravansary.converter.RoomEntityToReservableRoomResponseConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +17,8 @@ public class ConversionConfig {
     private Set<Converter> getConverters() {
         Set<Converter> converters = new HashSet<>();
         converters.add(new RoomEntityToReservableRoomResponseConverter());
+        converters.add(new ReservationRequestToReservationEntityConverter());
+        converters.add(new ReservationEntityToReservationResponseConverter());
 
         return converters;
     }
