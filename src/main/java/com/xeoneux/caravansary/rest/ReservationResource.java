@@ -1,7 +1,13 @@
 package com.xeoneux.caravansary.rest;
 
+import com.xeoneux.caravansary.converter.RoomEntityToReservationResponseConverter;
+import com.xeoneux.caravansary.entity.RoomEntity;
+import com.xeoneux.caravansary.repository.PageableRoomRepository;
 import com.xeoneux.caravansary.request.ReservationRequest;
 import com.xeoneux.caravansary.response.ReservationResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,17 +20,23 @@ import java.time.LocalDate;
 @RequestMapping(ResourceConstants.ROOM_RESERVATION_V1)
 public class ReservationResource {
 
+    @Autowired PageableRoomRepository pageableRoomRepository;
+
     @RequestMapping(
         path = "",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
-    public ResponseEntity<ReservationResponse> getAvailableRooms(
+    public Page<ReservationResponse> getAvailableRooms(
             @RequestParam(value = "checkin") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
                     LocalDate checkin,
             @RequestParam(value = "checkout") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-                    LocalDate checkout) {
-        return new ResponseEntity<>(new ReservationResponse(), HttpStatus.OK);
+                    LocalDate checkout,
+            Pageable pageable) {
+
+        Page<RoomEntity> roomEntityList = pageableRoomRepository.findAll(pageable);
+
+        return roomEntityList.map(new RoomEntityToReservationResponseConverter());
     }
 
     @RequestMapping(

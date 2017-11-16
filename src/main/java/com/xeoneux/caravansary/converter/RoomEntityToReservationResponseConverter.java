@@ -18,9 +18,10 @@ public class RoomEntityToReservationResponseConverter
         Links links = new Links();
         Self self = new Self();
         self.setRef(ResourceConstants.ROOM_RESERVATION_V1 + "/" + source.getId());
+        links.setSelf(self);
 
         reservationResponse.setLinks(links);
 
-        return null;
+        return reservationResponse;
     }
 }
