@@ -18,6 +18,7 @@ public class RoomEntityToReservableRoomResponseConverter
         links.setSelf(self);
 
         ReservableRoomResponse reservableRoomResponse = new ReservableRoomResponse();
+        reservableRoomResponse.setId(source.getId());
         reservableRoomResponse.setRoomNumber(source.getRoomNumber());
         reservableRoomResponse.setPrice(Integer.valueOf(source.getPrice()));
         reservableRoomResponse.setLinks(links);

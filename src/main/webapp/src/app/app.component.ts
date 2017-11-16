@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
-import { Http, Response } from "@angular/http";
+import { Headers, Http, RequestOptions, Response } from "@angular/http";
 
 import { Observable } from "rxjs/Rx";
 
@@ -16,6 +16,8 @@ export class AppComponent implements OnInit {
   private baseUrl = "http://localhost:8080";
 
   rooms: Room[];
+  checkin: string;
+  checkout: string;
   roomSearch: FormGroup;
   public submitted: boolean;
 
@@ -26,28 +28,44 @@ export class AppComponent implements OnInit {
       checkin: new FormControl(""),
       checkout: new FormControl("")
     });
+
+    const roomSearch$ = this.roomSearch.valueChanges;
+    roomSearch$.subscribe((value: RoomSearch) => {
+      this.checkin = value.checkin;
+      this.checkout = value.checkout;
+    });
   }
 
   onSubmit({ value, valid }: { value: RoomSearch; valid: boolean }) {
-    this.getAll(value).subscribe(
+    this.getAll().subscribe(
       rooms => (this.rooms = rooms),
       err => console.log(err)
     );
   }
 
   reserveRoom(value: string) {
-    console.log("Room id for reservation: " + value);
+    const request = new ReserveRoomRequest(value, this.checkin, this.checkout);
+    this.createReservation(request);
   }
 
-  getAll(value: RoomSearch): Observable<Room[]> {
+  createReservation(body: ReserveRoomRequest) {
+    const headers = new Headers({ "Content-Type": "application/json" });
+    const options = new RequestOptions({ headers });
+
+    this.http
+      .post(this.baseUrl + "/room/reservation/v1", body, options)
+      .subscribe(console.log);
+  }
+
+  getAll(): Observable<Room[]> {
     return this.http
       .get(
         this.baseUrl +
           "/room/reservation/v1" +
           "?checkin=" +
-          value.checkin +
+          this.checkin +
           "&checkout=" +
-          value.checkout
+          this.checkout
       )
       .map(this.mapRoom);
   }
@@ -67,4 +85,16 @@ export interface Room {
 export interface RoomSearch {
   checkin: string;
   checkout: string;
+}
+
+export class ReserveRoomRequest {
+  roomId: string;
+  checkin: string;
+  checkout: string;
+
+  constructor(roomId: string, checkin: string, checkout: string) {
+    this.roomId = roomId;
+    this.checkin = checkin;
+    this.checkout = checkout;
+  }
 }
