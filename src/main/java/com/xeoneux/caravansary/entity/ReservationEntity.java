@@ -15,6 +15,8 @@ public class ReservationEntity {
 
     @NotNull private LocalDate checkout;
 
+    @ManyToOne private RoomEntity roomEntity;
+
     public ReservationEntity() {
         super();
     }
@@ -47,5 +49,13 @@ public class ReservationEntity {
 
     public void setCheckout(LocalDate checkout) {
         this.checkout = checkout;
+    }
+
+    public RoomEntity getRoomEntity() {
+        return roomEntity;
+    }
+
+    public void setRoomEntity(RoomEntity roomEntity) {
+        this.roomEntity = roomEntity;
     }
 }
