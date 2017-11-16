@@ -1,11 +1,11 @@
 package com.xeoneux.caravansary.rest;
 
-import com.xeoneux.caravansary.converter.RoomEntityToReservationResponseConverter;
+import com.xeoneux.caravansary.converter.RoomEntityToReservableRoomResponseConverter;
 import com.xeoneux.caravansary.entity.RoomEntity;
 import com.xeoneux.caravansary.repository.PageableRoomRepository;
 import com.xeoneux.caravansary.repository.RoomRepository;
 import com.xeoneux.caravansary.request.ReservationRequest;
-import com.xeoneux.caravansary.response.ReservationResponse;
+import com.xeoneux.caravansary.response.ReservableRoomResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,7 +29,7 @@ public class ReservationResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
-    public Page<ReservationResponse> getAvailableRooms(
+    public Page<ReservableRoomResponse> getAvailableRooms(
             @RequestParam(value = "checkin") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
                     LocalDate checkin,
             @RequestParam(value = "checkout") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
@@ -38,7 +38,7 @@ public class ReservationResource {
 
         Page<RoomEntity> roomEntityPage = pageableRoomRepository.findAll(pageable);
 
-        return roomEntityPage.map(new RoomEntityToReservationResponseConverter());
+        return roomEntityPage.map(new RoomEntityToReservableRoomResponseConverter());
     }
 
     @RequestMapping(
@@ -57,9 +57,9 @@ public class ReservationResource {
         produces = MediaType.APPLICATION_JSON_UTF8_VALUE,
         consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
-    public ResponseEntity<ReservationResponse> createReservation(
+    public ResponseEntity<ReservableRoomResponse> createReservation(
             @RequestBody ReservationRequest reservationRequest) {
-        return new ResponseEntity<>(new ReservationResponse(), HttpStatus.CREATED);
+        return new ResponseEntity<>(new ReservableRoomResponse(), HttpStatus.CREATED);
     }
 
     @RequestMapping(
@@ -68,9 +68,9 @@ public class ReservationResource {
         produces = MediaType.APPLICATION_JSON_UTF8_VALUE,
         consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
-    public ResponseEntity<ReservationResponse> updateReservation(
+    public ResponseEntity<ReservableRoomResponse> updateReservation(
             @RequestBody ReservationRequest reservationRequest) {
-        return new ResponseEntity<>(new ReservationResponse(), HttpStatus.OK);
+        return new ResponseEntity<>(new ReservableRoomResponse(), HttpStatus.OK);
     }
 
     @RequestMapping(path = "", method = RequestMethod.DELETE)

@@ -2,6 +2,8 @@ package com.xeoneux.caravansary.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "Room")
@@ -14,6 +16,9 @@ public class RoomEntity {
     @NotNull private Integer roomNumber;
 
     @NotNull private String price;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    private List<ReservationEntity> reservationEntityList;
 
     public RoomEntity() {
         super();
@@ -47,5 +52,19 @@ public class RoomEntity {
 
     public void setPrice(String price) {
         this.price = price;
+    }
+
+    public List<ReservationEntity> getReservationEntityList() {
+        return reservationEntityList;
+    }
+
+    public void setReservationEntityList(List<ReservationEntity> reservationEntityList) {
+        this.reservationEntityList = reservationEntityList;
+    }
+
+    public void addReservationEntity(ReservationEntity reservationEntity) {
+        if (reservationEntityList == null) reservationEntityList = new ArrayList<>();
+
+        reservationEntityList.add(reservationEntity);
     }
 }

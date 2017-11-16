@@ -2,18 +2,18 @@ package com.xeoneux.caravansary.response;
 
 import com.xeoneux.caravansary.model.Links;
 
-public class ReservationResponse {
+public class ReservableRoomResponse {
 
     private Long id;
     private Integer roomNumber;
     private Integer price;
     private Links links;
 
-    public ReservationResponse() {
+    public ReservableRoomResponse() {
         super();
     }
 
-    public ReservationResponse(Integer roomNumber, Integer price) {
+    public ReservableRoomResponse(Integer roomNumber, Integer price) {
         super();
         this.roomNumber = roomNumber;
         this.price = price;
